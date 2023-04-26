@@ -1,4 +1,4 @@
-package cursoSpring.Products.entity;
+package cursoSpring.Products;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

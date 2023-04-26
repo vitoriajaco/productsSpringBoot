@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @Controller
+@RequestMapping
 public class ClienteController {
 
 
@@ -21,6 +22,7 @@ public class ClienteController {
     }
 
     @GetMapping
+    @ResponseBody
     public String metodo(){
         return "qualquer coisa";
     }
