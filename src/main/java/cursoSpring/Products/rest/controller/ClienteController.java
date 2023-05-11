@@ -2,10 +2,13 @@ package cursoSpring.Products.rest.controller;
 
 import cursoSpring.Products.entity.Cliente;
 import cursoSpring.Products.repository.Clientes;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -72,4 +75,14 @@ public class ClienteController {
 
     }
 
+    @GetMapping(path = "/api/clientes")
+    public ResponseEntity find (Cliente filtro) {
+        ExampleMatcher matcher = ExampleMatcher //permite que ele encontre os clientes atraves das propriedades
+                .matching() //
+                .withIgnoreCase() //Os valores que forem strings independentemente de estar maiusculo ou minusculo serão considerados na hora de encontrar
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING); //Forma que vai encontrar os valores String - em qualquer posição que esteja o valor ele ira ser retornado
+        Example example = Example.of(filtro, matcher);
+        List<Cliente> lista = clientes.findAll(example);
+        return ResponseEntity.ok(lista);
+    }
 }
