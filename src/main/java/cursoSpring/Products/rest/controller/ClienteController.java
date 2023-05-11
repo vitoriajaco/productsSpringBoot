@@ -42,7 +42,33 @@ public class ClienteController {
     @ResponseBody //Resposta da Requisição não confundir com o Request que vem na requisição que é o que recebe
     public ResponseEntity save (@RequestBody Cliente cliente) { //Esse (Cliente) vem no corpo da requisição
         Cliente clienteSalvo = clientes.save(cliente);
-        return ResponseEntity.ok(clienteSalvo); //Ainda nao esta no modelo restfull 
+        return ResponseEntity.ok(clienteSalvo); //Ainda nao esta no modelo restfull
+
+    }
+
+    @DeleteMapping(path = "/api/clientes/{id}")
+    @ResponseBody
+    public ResponseEntity delete (@PathVariable Integer id) { //O delete só recebe um id no corpo da requisição
+        Optional<Cliente> cliente = clientes.findById(id);
+
+        if (cliente.isPresent()) {
+            clientes.delete(cliente.get());
+            return ResponseEntity.noContent().build(); //Se o código funcionar retorna "204 no content"
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+
+    @PutMapping(path = "/api/clientes/{id}")
+    @ResponseBody
+    public ResponseEntity update(@PathVariable Integer id, @RequestBody Cliente cliente) {
+        return clientes.findById(id)
+                .map(clienteExistente -> { //O Optional tem o método map, se existir o resultado, ele entra no map e executa
+                    //o que está no map. Caso contrario ele retorna outra coisa.
+                    cliente.setId(clienteExistente.getId()); //Troca o id para nao precisar passar todos os dados get
+                    clientes.save(cliente);
+                    return ResponseEntity.noContent().build();
+                }).orElseGet(() -> ResponseEntity.notFound().build()); //O suplier nao recebe nada e retorna o que vc passar.
 
     }
 

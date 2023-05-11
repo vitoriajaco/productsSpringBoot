@@ -1,5 +1,7 @@
 package cursoSpring.Products.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -16,6 +18,7 @@ public class Cliente {
     public Cliente() {
     }
 
+    @JsonIgnore // Para o transformar em Json, deve ignorar essa propriedade de set pedidos
     @OneToMany//( mappedBy = "cliente" , fetch = FetchType.LAZY )
     private Set<Pedido> pedidos;
 
